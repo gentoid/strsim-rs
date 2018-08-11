@@ -40,5 +40,5 @@ fn jaro_winkler_works() {
 
 #[test]
 fn sorensen_dice_works() {
-    assert!((0.25 - sorensen_dice("night", "nacht")).abs() < 0.01);
+    assert!((0.30769 - sorensen_dice("looking", "spelling")).abs() < 0.01);
 }
