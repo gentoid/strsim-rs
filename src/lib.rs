@@ -309,7 +309,7 @@ pub fn sorensen_dice(a: &str, b: &str) -> f64 {
     let b_bigrams: Vec<&[char]> = b_chars.windows(2).collect();
     let b_bigrams_len = b_bigrams.len();
 
-    let intersection: Vec<&[char]> = a_bigrams.filter(|&elem| b_bigrams.contains(&elem)).collect();
+    let intersection: Vec<&[char]> = a_bigrams.filter(|elem| b_bigrams.contains(&elem)).collect();
 
     2.0 * (intersection.len() as f64) / (a_bigrams_len as f64 + b_bigrams_len as f64)
 }
