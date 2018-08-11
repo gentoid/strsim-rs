@@ -1,7 +1,7 @@
 extern crate strsim;
 
 use strsim::{hamming, levenshtein, osa_distance, damerau_levenshtein, jaro,
-             jaro_winkler};
+             jaro_winkler, sorensen_dice};
 
 #[test]
 fn hamming_works() {
@@ -36,4 +36,9 @@ fn jaro_works() {
 fn jaro_winkler_works() {
     assert!((0.911 - jaro_winkler("cheeseburger", "cheese fries")).abs() <
             0.001);
+}
+
+#[test]
+fn sorensen_dice_works() {
+    assert!((0.25 - sorensen_dice("night", "nacht")).abs() < 0.01);
 }

@@ -295,6 +295,25 @@ pub fn damerau_levenshtein(a: &str, b: &str) -> usize {
     distances[a_len + 1][b_len + 1]
 }
 
+pub fn sorensen_dice(a: &str, b: &str) -> f64 {
+    let a_len = a.len();
+    let b_len = b.len();
+    if a_len == 0 && b_len == 0 { return 1.0; }
+    if a_len == 0 || b_len == 0 { return 0.0; }
+
+    let a_chars: Vec<char> = a.chars().collect();
+    let a_bigrams = a_chars.windows(2);
+    let a_bigrams_len = a_bigrams.len();
+
+    let b_chars: Vec<char> = b.chars().collect();
+    let b_bigrams: Vec<&[char]> = b_chars.windows(2).collect();
+    let b_bigrams_len = a_bigrams.len();
+
+    let intersection: Vec<&[char]> = a_bigrams.filter(|&elem| b_bigrams.contains(&elem)).collect();
+
+    2.0 * (intersection.len() as f64) / (a_bigrams_len as f64 + b_bigrams_len as f64)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -694,5 +713,25 @@ mod tests {
     #[test]
     fn damerau_levenshtein_unrestricted_edit() {
         assert_eq!(3, damerau_levenshtein("a cat", "an abct"));
+    }
+
+    #[test]
+    fn sorensen_dice_both_empty() {
+        assert_eq!(1.0, sorensen_dice("", ""))
+    }
+
+    #[test]
+    fn sorensen_dice_first_empty() {
+        assert_eq!(0.0, sorensen_dice("", "while the second isn't"))
+    }
+
+    #[test]
+    fn sorensen_dice_second_empty() {
+        assert_eq!(0.0, sorensen_dice("while the first isn't", ""))
+    }
+
+    #[test]
+    fn sorensen_dice_equal_strings() {
+        assert_eq!(1.0, sorensen_dice("Sørensen–Dice", "Sørensen–Dice"))
     }
 }
